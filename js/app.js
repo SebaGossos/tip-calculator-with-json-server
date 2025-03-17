@@ -68,6 +68,7 @@ function getDishes() {
 }
 
 function showDishes( dishes ) {
+
     const content = document.querySelector('#platillos .contenido');
     const hasDishes = document.querySelector('.row');
     if( hasDishes ) {
@@ -97,6 +98,13 @@ function showDishes( dishes ) {
         inputQuantity.id = `producto-${ dish.id }`;
         inputQuantity.value = 0;
         inputQuantity.classList.add('form-control');
+        
+
+        // Function that detects the quantity and the dish being delivered
+        inputQuantity.onchange = () => {
+            const quantity = parseInt( inputQuantity.value );
+            addDishes( {...dish, quantity } )
+        };
 
         const add = document.createElement('DIV');
         add.classList.add('col-md-2');
@@ -105,4 +113,8 @@ function showDishes( dishes ) {
         row.append( name, price, category, add );
         content.append( row );
     }) 
+}
+
+function addDishes( product ) {
+    console.log( product  )
 }
