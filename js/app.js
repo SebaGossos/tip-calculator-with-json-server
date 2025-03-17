@@ -4,6 +4,12 @@ let client = {
     order: [],
 };
 
+const categories = {
+    1: 'Comidas',
+    2: 'Bebidas',
+    3: 'Postres'
+}
+
 const btnSaveClient = document.querySelector('#guardar-cliente');
 btnSaveClient.addEventListener('click', saveClient);
 
@@ -83,9 +89,20 @@ function showDishes( dishes ) {
 
         const category = document.createElement('DIV');
         category.classList.add('col-md-3');
-        category.textContent = dish.categoria;
+        category.textContent = categories[dish.categoria];
+
+        const inputQuantity = document.createElement('INPUT');
+        inputQuantity.type = 'number';
+        inputQuantity.min = 0;
+        inputQuantity.id = `producto-${ dish.id }`;
+        inputQuantity.value = 0;
+        inputQuantity.classList.add('form-control');
+
+        const add = document.createElement('DIV');
+        add.classList.add('col-md-2');
+        add.appendChild( inputQuantity );
         
-        row.append( name, price, category );
+        row.append( name, price, category, add );
         content.append( row );
     }) 
 }
