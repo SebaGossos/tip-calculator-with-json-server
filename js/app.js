@@ -102,8 +102,9 @@ function showDishes( dishes ) {
 
         // Function that detects the quantity and the dish being delivered
         inputQuantity.onchange = () => {
-            const quantity = parseInt( inputQuantity.value );
-            addDishes( {...dish, quantity } )
+            const cantidad = parseInt( inputQuantity.value );
+            addDishes( {...dish, cantidad } )
+            console.log( client )
         };
 
         const add = document.createElement('DIV');
@@ -116,5 +117,30 @@ function showDishes( dishes ) {
 }
 
 function addDishes( product ) {
-    console.log( product  )
+    // Extract the current order 
+    let { order } = client; 
+    
+    // Check that the amount is grater than 0
+    if ( product.cantidad < 0 ) {
+        console.log( 'Error is less than or equal to 0' )
+        return;
+    }
+
+    // Check if element is alredy exist in array, if not adding in order.
+    if( !order.some( p => p.id === product.id ) ) {
+        client.order = [ ...order, product ]
+        return;
+    }
+    
+    // If is equal to 0 delete from order array
+    if( product.cantidad === 0 ) {
+        client.order = order.filter( p => p.id !== product.id );
+        return;
+    }
+
+    client.order = order.map( p => {
+        if( p.id === product.id ) p.cantidad = product.cantidad;
+        return p;
+    })
+
 }
