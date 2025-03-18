@@ -70,7 +70,7 @@ function getDishes() {
 function showDishes( dishes ) {
 
     const content = document.querySelector('#platillos .contenido');
-    const hasDishes = document.querySelector('.row');
+    const hasDishes = document.querySelector('.row-special');
     if( hasDishes ) {
         hasDishes.remove()
     }
@@ -78,7 +78,7 @@ function showDishes( dishes ) {
     dishes.forEach( dish => {
 
         const row = document.createElement('DIV');
-        row.classList.add('row', 'py-3', 'border-top');
+        row.classList.add('row-special', 'row', 'py-3', 'border-top');
 
         const name = document.createElement('DIV');
         name.classList.add('col-md-4');
@@ -104,7 +104,11 @@ function showDishes( dishes ) {
         inputQuantity.onchange = () => {
             const cantidad = parseInt( inputQuantity.value );
             addDishes( {...dish, cantidad } )
-            console.log( client )
+            // Clean previous HTML code 
+            cleanHTML();
+            
+            // show resume
+            updateResume();
         };
 
         const add = document.createElement('DIV');
@@ -143,4 +147,92 @@ function addDishes( product ) {
         return p;
     })
 
+}
+
+function updateResume() {
+    const content = document.querySelector('#resumen .contenido');
+    const resume = document.createElement('DIV');
+    resume.classList.add('col-md-6', 'card', 'py-5', 'px-3', 'shadow');
+
+    // Info table
+    const table = document.createElement('LI');
+    table.textContent = 'Mesa: '
+    table.classList.add('fw-bold')
+
+    const tableSpan = document.createElement('SPAN');
+    tableSpan.textContent = client.table;
+    tableSpan.classList.add('fw-normal');
+    // info hour
+    const hour = document.createElement('LI');
+    hour.textContent = 'Mesa: '
+    hour.classList.add('fw-bold')
+
+    const hourSpan = document.createElement('SPAN');
+    hourSpan.textContent = client.hour;
+    hourSpan.classList.add('fw-normal');
+
+    // add to father element
+    table.appendChild( tableSpan );
+    hour.appendChild( hourSpan );
+
+    // heading  section
+    const heading = document.createElement('H3');
+    heading.textContent = 'Platillos Consumidos'
+    heading.classList.add('my-4', 'text-center')
+
+    // iterate array delivery
+    const group = document.createElement('UL');
+    group.classList.add('list-group');
+    
+    const { order } = client;
+    order.forEach( i => {
+        const { nombre, cantidad, precio, id } = i;
+
+        const list = document.createElement('li');
+        list.classList.add('list-group-item');
+        
+        const nameEl = document.createElement('h4');
+        nameEl.classList.add('my-4');
+        nameEl.textContent = nombre;
+
+        // quantity article
+        const quantityEl = document.createElement('p');
+        quantityEl.classList.add('fw-bold');
+        quantityEl.textContent = 'Cantidad: ';
+
+        const quantityValue = document.createElement('SPAN');
+        quantityValue.classList.add('fw-normal');
+        quantityValue.textContent = cantidad;
+
+        // price article
+        const priceEl = document.createElement('p');
+        priceEl.classList.add('fw-bold');
+        priceEl.textContent = 'Precio: ';
+
+        const priceValue = document.createElement('SPAN');
+        priceValue.classList.add('fw-normal');
+        priceValue.textContent = `$${ precio }`;
+
+        // add values to conteiners
+        priceEl.appendChild( priceValue );
+        quantityEl.appendChild( quantityValue )
+
+        // add elements to li
+        list.append( nameEl, quantityEl, priceEl );
+
+        // add list to principal group
+        group.appendChild( list );
+        
+        
+    })
+
+    resume.append( table, hour, heading, group )
+    content.append( resume );
+}
+
+function cleanHTML() {
+    const content = document.querySelector('#resumen .contenido');
+    while( content.firstChild ) {
+        content.removeChild( content.firstChild );
+    }
 }
