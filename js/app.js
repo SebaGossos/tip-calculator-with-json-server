@@ -13,7 +13,6 @@ const categories = {
 const btnSaveClient = document.querySelector('#guardar-cliente');
 btnSaveClient.addEventListener('click', saveClient);
 
-
 function saveClient() {
     
     const table = document.querySelector('#mesa').value;
@@ -45,7 +44,6 @@ function saveClient() {
 
     // Show sections
     showSections();
-
 
     // get dishes from the json api
     getDishes();
@@ -99,7 +97,6 @@ function showDishes( dishes ) {
         inputQuantity.value = 0;
         inputQuantity.classList.add('form-control');
         
-
         // Function that detects the quantity and the dish being delivered
         inputQuantity.onchange = () => {
             const cantidad = parseInt( inputQuantity.value );
@@ -164,7 +161,7 @@ function updateResume() {
     tableSpan.classList.add('fw-normal');
     // info hour
     const hour = document.createElement('LI');
-    hour.textContent = 'Mesa: '
+    hour.textContent = 'Hora: '
     hour.classList.add('fw-bold')
 
     const hourSpan = document.createElement('SPAN');
@@ -222,18 +219,27 @@ function updateResume() {
         subtotalValue.classList.add('fw-normal');
         subtotalValue.textContent = calcSubtotal(precio, cantidad);
 
+        // BTN DELETE
+        const btnDelete = document.createElement('button');
+        btnDelete.classList.add('btn', 'btn-danger')
+        btnDelete.textContent = 'Eliminar del pedido'
+
+        // function for delete the delivery
+        btnDelete.onclick = () => {
+            deleteProduct(id);
+        }
+
         // add values to conteiners
         priceEl.appendChild( priceValue );
         quantityEl.appendChild( quantityValue );
         subtotalEl.appendChild(subtotalValue);
 
         // add elements to li
-        list.append( nameEl, quantityEl, priceEl, subtotalEl );
+        list.append( nameEl, quantityEl, priceEl, subtotalEl, btnDelete );
 
         // add list to principal group
         group.appendChild( list );
-        
-        
+  
     })
 
     resume.append( table, hour, heading, group )
@@ -248,3 +254,11 @@ function cleanHTML() {
 }
 
 const calcSubtotal = ( price, quantity ) => `$ ${ price * quantity }`;
+
+const deleteProduct = id => {
+    client.order = client.order.filter( i => i.id !== id );
+    const inputQuantity = document.querySelector(`#producto-${ id }`);
+    inputQuantity.value = 0;
+
+    cleanHTML();
+}
