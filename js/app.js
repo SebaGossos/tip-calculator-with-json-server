@@ -213,12 +213,22 @@ function updateResume() {
         priceValue.classList.add('fw-normal');
         priceValue.textContent = `$${ precio }`;
 
+        // subtotal  article
+        const subtotalEl = document.createElement('p');
+        subtotalEl.classList.add('fw-bold');
+        subtotalEl.textContent = 'Subtotal: ';
+
+        const subtotalValue = document.createElement('SPAN');
+        subtotalValue.classList.add('fw-normal');
+        subtotalValue.textContent = calcSubtotal(precio, cantidad);
+
         // add values to conteiners
         priceEl.appendChild( priceValue );
-        quantityEl.appendChild( quantityValue )
+        quantityEl.appendChild( quantityValue );
+        subtotalEl.appendChild(subtotalValue);
 
         // add elements to li
-        list.append( nameEl, quantityEl, priceEl );
+        list.append( nameEl, quantityEl, priceEl, subtotalEl );
 
         // add list to principal group
         group.appendChild( list );
@@ -236,3 +246,5 @@ function cleanHTML() {
         content.removeChild( content.firstChild );
     }
 }
+
+const calcSubtotal = ( price, quantity ) => `$ ${ price * quantity }`;
