@@ -149,7 +149,7 @@ function addDishes( product ) {
 function updateResume() {
     const content = document.querySelector('#resumen .contenido');
     const resume = document.createElement('DIV');
-    resume.classList.add('col-md-6', 'card', 'py-5', 'px-3', 'shadow');
+    resume.classList.add('col-md-6', 'card', 'py-2', 'px-3', 'shadow');
 
     // Info table
     const table = document.createElement('LI');
@@ -242,8 +242,11 @@ function updateResume() {
   
     })
 
-    resume.append( table, hour, heading, group )
+    resume.append( heading, table, hour, group )
     content.append( resume );
+
+    // Show tips form
+    formTips();
 }
 
 function cleanHTML() {
@@ -262,3 +265,23 @@ const deleteProduct = id => {
 
     cleanHTML();
 }
+
+function formTips() {
+    const content = document.querySelector('#resumen .contenido');
+
+    const form = document.createElement('div');
+    form.classList.add('col-md-6', 'form');
+
+    const divForm = document.createElement('div');
+    divForm.classList.add('card', 'py-2', 'px-3', 'shadow');
+
+    const heading = document.createElement('h3');
+    heading.classList.add('my-4', 'text-center');
+    heading.textContent = 'Propina';
+
+    divForm.appendChild( heading )
+    form.appendChild( divForm )
+
+    content.appendChild( form );
+
+};
